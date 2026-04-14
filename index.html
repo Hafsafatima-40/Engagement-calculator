@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NEXUS ENGAGE — Social Metrics Calculator</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    }
+    body {
+      background: linear-gradient(135deg, #0a0f1e, #03060c);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 1.5rem;
+    }
+    .calculator-card {
+      max-width: 900px;
+      width: 100%;
+      background: rgba(12, 20, 35, 0.9);
+      backdrop-filter: blur(10px);
+      border-radius: 2rem;
+      border: 1px solid #2a3f66;
+      box-shadow: 0 25px 45px -12px black;
+      overflow: hidden;
+    }
+    .brand-header {
+      background: linear-gradient(135deg, #0b1120, #0f172a);
+      padding: 1.5rem 2rem;
+      border-bottom: 1px solid #1e2a4a;
+    }
+    .brand-header h1 {
+      font-size: 1.8rem;
+      color: #f0f4ff;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .brand-header h1 span {
+      background: #2563eb;
+      font-size: 0.85rem;
+      padding: 0.2rem 1rem;
+      border-radius: 40px;
+      color: white;
+    }
+    .sub {
+      color: #9bb5e0;
+      margin-top: 0.5rem;
+      font-size: 0.85rem;
+    }
+    .content-panel {
+      padding: 2rem;
+    }
+    .input-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 1.8rem;
+    }
+    .input-field label {
+      color: #b9d0f0;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .input-wrapper input {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      background: #0e1625;
+      border: 1px solid #25355a;
+      border-radius: 1rem;
+      color: white;
+      font-size: 1rem;
+      outline: none;
+    }
+    .input-wrapper input:focus {
+      border-color: #3b82f6;
+    }
+    .helper-text {
+      font-size: 0.65rem;
+      color: #6c81ac;
+      margin-top: 0.3rem;
+    }
+    .engagement-type {
+      background: rgba(8, 18, 30, 0.6);
+      border-radius: 1.5rem;
+      padding: 0.8rem 1.2rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      margin-bottom: 1.8rem;
+      border: 1px solid #253c66;
+    }
+    .radio-group {
+      display: flex;
+      gap: 1rem;
+    }
+    .radio-group label {
+      background: #0f172f;
+      padding: 0.4rem 1rem;
+      border-radius: 2rem;
+      color: #cbddf5;
+      cursor: pointer;
+      border: 1px solid #2a3f66;
+    }
+    .radio-group input:checked + label {
+      background: #1e2a4a;
+      border-color: #3b82f6;
+    }
+    .results-panel {
+      background: rgba(2, 8, 18, 0.6);
+      border-radius: 1.5rem;
+      padding: 1.5rem;
+      margin: 1rem 0;
+      border: 1px solid #2a3f66;
+    }
+    .metric-group {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+    }
+    .metric-card {
+      flex: 1;
+      background: #0b1225;
+      border-radius: 1.2rem;
+      padding: 1rem;
+      text-align: center;
+      border: 1px solid #27417a;
+    }
+    .metric-label {
+      font-size: 0.7rem;
+      color: #90a9df;
+      text-transform: uppercase;
+    }
+    .metric-value {
+      font-size: 2rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #fff, #b9d0ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .rating-message {
+      background: #071127;
+      border-radius: 1rem;
+      padding: 0.8rem;
+      text-align: center;
+      color: #d6e6ff;
+      font-size: 0.85rem;
+      border-left: 3px solid #3b82f6;
+    }
+    .action-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: flex-end;
+      margin-top: 1.2rem;
+    }
+    button {
+      padding: 0.6rem 1.3rem;
+      border-radius: 2rem;
+      border: none;
+      background: #111c32;
+      color: white;
+      cursor: pointer;
+      font-weight: 600;
+      border: 1px solid #2d467a;
+    }
+    button:hover {
+      background: #1e2a4a;
+    }
+    footer {
+      background: #03080f;
+      padding: 0.8rem;
+      text-align: center;
+      font-size: 0.7rem;
+      color: #8aa2d4;
+    }
+  </style>
+</head>
+<body>
+<div class="calculator-card">
+  <div class="brand-header">
+    <h1>📊 NEXUS ENGAGE <span>Social Metrics Calculator</span></h1>
+    <div class="sub">Know your numbers. Grow your engagement.</div>
+  </div>
+  <div class="content-panel">
+    <div class="input-grid">
+      <div class="input-field">
+        <label>👥 TOTAL FOLLOWERS</label>
+        <div class="input-wrapper"><input type="number" id="followers" value="18400"></div>
+      </div>
+      <div class="input-field">
+        <label>❤️ TOTAL INTERACTIONS</label>
+        <div class="input-wrapper"><input type="number" id="interactions" value="3420"></div>
+      </div>
+      <div class="input-field">
+        <label>📡 REACH / IMPRESSIONS</label>
+        <div class="input-wrapper"><input type="number" id="reach" value="12900"></div>
+        <div class="helper-text">Optional for ERR</div>
+      </div>
+    </div>
+    <div class="engagement-type">
+      <span>⚡ CALCULATION ENGINE</span>
+      <div class="radio-group">
+        <label><input type="radio" name="engMethod" value="followers" checked> By Followers (ER)</label>
+        <label><input type="radio" name="engMethod" value="reach"> By Reach (ERR)</label>
+      </div>
+    </div>
+    <div class="results-panel">
+      <div class="metric-group">
+        <div class="metric-card"><div class="metric-label">📊 ENGAGEMENT RATE</div><div class="metric-value" id="engagementRateValue">0.00%</div></div>
+        <div class="metric-card"><div class="metric-label">⚡ TOTAL ACTIONS</div><div class="metric-value" id="totalActionsValue">0</div></div>
+        <div class="metric-card"><div class="metric-label">🎯 BASE METRIC</div><div class="metric-value" id="baseMetricValue">—</div></div>
+      </div>
+      <div id="ratingMessage" class="rating-message">💎 Enter your metrics to see engagement score</div>
+    </div>
+    <div class="action-buttons">
+      <button id="resetBtn">⟳ RESET</button>
+      <button id="calcBtn">✨ UPDATE</button>
+    </div>
+  </div>
+  <footer>ER = (Interactions / Followers) × 100 | ERR = (Interactions / Reach) × 100</footer>
+</div>
+<script>
+  const followers = document.getElementById('followers');
+  const interactions = document.getElementById('interactions');
+  const reach = document.getElementById('reach');
+  const rateSpan = document.getElementById('engagementRateValue');
+  const actionsSpan = document.getElementById('totalActionsValue');
+  const baseSpan = document.getElementById('baseMetricValue');
+  const msgDiv = document.getElementById('ratingMessage');
+  const resetBtn = document.getElementById('resetBtn');
+  const calcBtn = document.getElementById('calcBtn');
+  const radioFollowers = document.querySelector('input[value="followers"]');
+  const radioReach = document.querySelector('input[value="reach"]');
+
+  function formatNumber(n) { return Number(n).toLocaleString(); }
+
+  function calculate() {
+    let f = parseFloat(followers.value) || 0;
+    let i = parseFloat(interactions.value) || 0;
+    let r = parseFloat(reach.value) || 0;
+    f = Math.max(0, f); i = Math.max(0, i); r = Math.max(0, r);
+    actionsSpan.innerText = formatNumber(i);
+    const method = radioReach.checked ? 'reach' : 'followers';
+    let rate = 0, baseVal = 0, baseName = '';
+    if (method === 'followers') {
+      baseName = 'Followers';
+      baseVal = f;
+      if (baseVal > 0) rate = (i / baseVal) * 100;
+      baseSpan.innerText = baseVal > 0 ? formatNumber(baseVal) : '—';
+    } else {
+      baseName = 'Reach';
+      baseVal = r;
+      if (baseVal > 0) rate = (i / baseVal) * 100;
+      baseSpan.innerText = baseVal > 0 ? formatNumber(baseVal) : '—';
+    }
+    rate = Math.min(rate, 9999);
+    rateSpan.innerText = rate.toFixed(2) + '%';
+    let msg = '';
+    if (method === 'followers') {
+      if (f <= 0) msg = '⚠️ Enter valid followers';
+      else if (i === 0) msg = '📡 No interactions yet';
+      else if (rate < 1) msg = '🌀 Low engagement (<1%)';
+      else if (rate < 2.5) msg = '📈 Moderate engagement (1-2.5%)';
+      else if (rate < 5) msg = '🔥 Strong engagement (2.5-5%)';
+      else msg = '💎 Viral threshold! 5%+ ER';
+    } else {
+      if (r <= 0) msg = '⚠️ Enter reach for ERR';
+      else if (i === 0) msg = '💬 Zero interactions';
+      else if (rate < 1) msg = '📉 Low ERR (<1%)';
+      else if (rate < 3) msg = '✅ Good ERR (1-3%)';
+      else if (rate < 6) msg = '⚡ High ERR (3-6%)';
+      else msg = '🏆 Legendary ERR (6%+)';
+    }
+    msgDiv.innerHTML = `🌀 ${msg}<br><span style="font-size:0.7rem;">method: ${method === 'followers' ? 'ER (followers)' : 'ERR (reach)'}</span>`;
+  }
+
+  function resetToDemo() {
+    followers.value = "18400";
+    interactions.value = "3420";
+    reach.value = "12900";
+    radioFollowers.checked = true;
+    calculate();
+  }
+
+  followers.addEventListener('input', calculate);
+  interactions.addEventListener('input', calculate);
+  reach.addEventListener('input', calculate);
+  radioFollowers.addEventListener('change', calculate);
+  radioReach.addEventListener('change', calculate);
+  resetBtn.addEventListener('click', resetToDemo);
+  calcBtn.addEventListener('click', calculate);
+  calculate();
+</script>
+</body>
+</html>
